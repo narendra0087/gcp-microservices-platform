@@ -1,0 +1,27 @@
+services:
+
+  user-service:
+    build: ./services/user-service
+    ports:
+      - "8001:8080"
+
+  product-service:
+    build: ./services/product-service
+    ports:
+      - "8002:8080"
+
+  order-service:
+    build: ./services/order-service
+    ports:
+      - "8003:8080"
+    environment:
+      PRODUCT_SERVICE_URL: http://product-service:8080
+      PAYMENT_SERVICE_URL: http://payment-service:8080
+    depends_on:
+      - product-service
+      - payment-service
+
+  payment-service:
+    build: ./services/payment-service
+    ports:
+      - "8004:8080"
